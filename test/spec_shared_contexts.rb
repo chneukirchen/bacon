@@ -190,10 +190,10 @@ describe "Bacon" do
 
   it "should have should.be.identical_to/same_as" do
     lambda { s = "string"; s.should.be.identical_to s }.should succeed
-    lambda { "string".should.be.identical_to "string".dup }.should fail
+    lambda { "string".should.be.identical_to "string" }.should fail
 
     lambda { s = "string"; s.should.be.same_as s }.should succeed
-    lambda { "string".should.be.same_as "string".dup }.should fail
+    lambda { "string".should.be.same_as "string" }.should fail
   end
 
   it "should have should.respond_to" do
@@ -292,12 +292,12 @@ describe "before/after" do
   end
 
   after do
-    @a.should.equal 3
+    @a.should.equal 2
+    @a = 3
   end
 
   after do
-    @a.should.equal 2
-    @a = 3
+    @a.should.equal 3
   end
 
   it "should run in the right order" do
@@ -323,12 +323,9 @@ describe "before/after" do
       @a = 5
     end
 
-    after do
-      @a = 2
-    end
-
     it "should run in the right order" do
       @a.should.equal 5
+      @a = 2
     end
   end
 
@@ -378,10 +375,6 @@ describe "Methods" do
     42
   end
 
-  def the_towels
-    yield "DON'T PANIC"
-  end
-
   it "should be accessible in a test" do
     the_meaning_of_life.should == 42
   end
@@ -389,12 +382,6 @@ describe "Methods" do
   describe "when in a sibling context" do
     it "should be accessible in a test" do
       the_meaning_of_life.should == 42
-    end
-
-    it "should pass the block" do
-      the_towels do |label|
-        label.should == "DON'T PANIC"
-      end.should == true
     end
   end
 end
